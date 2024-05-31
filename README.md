@@ -65,8 +65,9 @@ ON p.id=fkidpais
 WHERE p.nombre='españa';
 
  ```
-|------------------------|------------|
+
 | id_oficina             | numero     |
+|------------------------|------------|
 | Barcelona              | 1122334455 |
 | Sevilla                | 6677889900 |
 | Valencia               | 1122334455 |
