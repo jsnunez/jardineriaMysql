@@ -442,7 +442,7 @@ WHERE ci.nombre='Fuenlabrada';
 ```
 
 | nombre            | Direccion_oficina                  |
-+-------------------+------------------------------------+
+|-------------------|------------------------------------|
 | Fabricaciones Eta | Calle de la Amargura 456           |
 | Transporte Mu     | Avenida Siempre Viva 742           |
 | Transporte Mu     | Boulevard de los Sueños Rotos 123  |
@@ -464,7 +464,7 @@ ON o.fkIdCiudad=ci.id;
 
 ```
 | nombre             | representante_venta | ciudad_oficina |
-+--------------------+---------------------+----------------+
+|--------------------|---------------------|----------------|
 | Empresa Alpha      | Juan                | Medellín       |
 | Industria Beta     | Maria               | Barcelona      |
 | Comercio Gamma     | Ana                 | Medellín       |
@@ -503,7 +503,7 @@ right JOIN empleado AS e2
 ON e1.id=e2.fkIdJefe;
 ```
 | nombre  | nombre_jefe |
-+---------+-------------+
+|---------|-------------|
 | Juan    | NULL        |
 | Maria   | Juan        |
 | Ana     | Juan        |
@@ -553,7 +553,7 @@ ON e2.id=e3.fkIdJefe;
 ```
 
 | nombre_embpleado | nombre_jefe1 | nombre_jefe2 |
-+------------------+--------------+--------------+
+|------------------|--------------|--------------|
 | Juan             | NULL         | NULL         |
 | Maria            | Juan         | NULL         |
 | Ana              | Juan         | NULL         |
@@ -600,7 +600,7 @@ ON p.fkIdCodigoCliente=c.id
 WHERE p.fechaEsperada<p.fechaEntrega;
 ```
 | nombre            | fechaEsperada | fechaEntrega |
-+-------------------+---------------+--------------+
+|-------------------|---------------|--------------|
 | Consultoria Theta | 2009-05-25    | 2009-05-28   |
 | Consultoria Theta | 2010-09-17    | 2010-09-25   |
 | Empresa Alpha     | 2008-03-02    | 2008-03-05   |
