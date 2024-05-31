@@ -494,9 +494,121 @@ ON o.fkIdCiudad=ci.id;
 
 9. Devuelve un listado con el nombre de los empleados junto con el nombre
 de sus jefes.
-10. Devuelve un listado que muestre el nombre de cada empleados, el nombre
+
+
+```sql
+SELECT e2.nombre,e1.nombre AS nombre_jefe
+FROM empleado AS e1
+right JOIN empleado AS e2
+ON e1.id=e2.fkIdJefe;
+```
+| nombre  | nombre_jefe |
++---------+-------------+
+| Juan    | NULL        |
+| Maria   | Juan        |
+| Ana     | Juan        |
+| Luis    | Maria       |
+| Elena   | Ana         |
+| Jorge   | Juan        |
+| Silvia  | Maria       |
+| David   | Ana         |
+| Laura   | Juan        |
+| Pedro   | Maria       |
+| Marta   | Silvia      |
+| Alberto | Juan        |
+| Carmen  | Maria       |
+| Pablo   | Silvia      |
+| Carlos  | Maria       |
+| Antonia | Juan        |
+| Carlos  | Maria       |
+| Ana     | Ana         |
+| Luis    | Luis        |
+| Sofía   | Elena       |
+| Miguel  | Jorge       |
+| Lucía   | Silvia      |
+| Javier  | David       |
+| Isabel  | Laura       |
+| Diego   | Pedro       |
+| Natalia | Marta       |
+| Pedro   | Alberto     |
+| Carmen  | Carmen      |
+| Antonio | Pablo       |
+| Paula   | Carlos      |
+| Manuel  | Antonia     |
+| Sara    | Carlos      |
+| José    | Ana         |
+| Raquel  | Luis        |
+
+11. Devuelve un listado que muestre el nombre de cada empleados, el nombre
 de su jefe y el nombre del jefe de sus jefe.
-11. Devuelve el nombre de los clientes a los que no se les ha entregado a
+
+```sql
+SELECT e3.nombre AS nombre_embpleado,e2.nombre AS nombre_jefe1,e1.nombre AS nombre_jefe2
+FROM empleado AS e1
+right JOIN empleado AS e2
+ON e1.id=e2.fkIdJefe
+right JOIN empleado AS e3
+ON e2.id=e3.fkIdJefe;
+
+```
+
+| nombre_embpleado | nombre_jefe1 | nombre_jefe2 |
++------------------+--------------+--------------+
+| Juan             | NULL         | NULL         |
+| Maria            | Juan         | NULL         |
+| Ana              | Juan         | NULL         |
+| Luis             | Maria        | Juan         |
+| Elena            | Ana          | Juan         |
+| Jorge            | Juan         | NULL         |
+| Silvia           | Maria        | Juan         |
+| David            | Ana          | Juan         |
+| Laura            | Juan         | NULL         |
+| Pedro            | Maria        | Juan         |
+| Marta            | Silvia       | Maria        |
+| Alberto          | Juan         | NULL         |
+| Carmen           | Maria        | Juan         |
+| Pablo            | Silvia       | Maria        |
+| Carlos           | Maria        | Juan         |
+| Antonia          | Juan         | NULL         |
+| Carlos           | Maria        | Juan         |
+| Ana              | Ana          | Juan         |
+| Luis             | Luis         | Maria        |
+| Sofía            | Elena        | Ana          |
+| Miguel           | Jorge        | Juan         |
+| Lucía            | Silvia       | Maria        |
+| Javier           | David        | Ana          |
+| Isabel           | Laura        | Juan         |
+| Diego            | Pedro        | Maria        |
+| Natalia          | Marta        | Silvia       |
+| Pedro            | Alberto      | Juan         |
+| Carmen           | Carmen       | Maria        |
+| Antonio          | Pablo        | Silvia       |
+| Paula            | Carlos       | Maria        |
+| Manuel           | Antonia      | Juan         |
+| Sara             | Carlos       | Maria        |
+| José             | Ana          | Ana          |
+| Raquel           | Luis         | Luis         |
+
+13. Devuelve el nombre de los clientes a los que no se les ha entregado a
 tiempo un pedido.
-12. Devuelve un listado de las diferentes gamas de producto que ha comprado
+
+```sql
+SELECT c.nombre,p.fechaEsperada,p.fechaEntrega
+FROM cliente AS c
+JOIN pedido AS p
+ON p.fkIdCodigoCliente=c.id
+WHERE p.fechaEsperada<p.fechaEntrega;
+```
+| nombre            | fechaEsperada | fechaEntrega |
++-------------------+---------------+--------------+
+| Consultoria Theta | 2009-05-25    | 2009-05-28   |
+| Consultoria Theta | 2010-09-17    | 2010-09-25   |
+| Empresa Alpha     | 2008-03-02    | 2008-03-05   |
+| Transporte Mu     | 2008-04-23    | 2008-04-25   |
+| Empresa Alpha     | 2012-06-15    | 2012-06-17   |
+
+15. Devuelve un listado de las diferentes gamas de producto que ha comprado
 cada cliente.
+
+
+
