@@ -427,16 +427,76 @@ GROUP BY c.id;
 
 6. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada.
 
+```sql
+SELECT c.nombre, do.direccion AS Direccion_oficina
+FROM ciudad AS ci
+JOIN cliente AS c
+ON c.fkIdCiudad=ci.id
+jOIN empleado AS e
+ON c.fkCodigoEmpleadoRepVentas=e.id
+JOIN oficina AS o
+ON e.fkIdOficina =o.id
+JOIN direccionoficina AS do
+ON do.fkIdOficina=o.id
+WHERE ci.nombre='Fuenlabrada';
+```
 
+| nombre            | Direccion_oficina                  |
++-------------------+------------------------------------+
+| Fabricaciones Eta | Calle de la Amargura 456           |
+| Transporte Mu     | Avenida Siempre Viva 742           |
+| Transporte Mu     | Boulevard de los Sueños Rotos 123  |
+| Exportaciones Rho | Plaza de la Alegría 789            |
 
 7. Devuelve el nombre de los clientes y el nombre de sus representantes junto
 con la ciudad de la oficina a la que pertenece el representante.
 
-8. Devuelve un listado con el nombre de los empleados junto con el nombre
+
+```sql
+SELECT c.nombre,e.nombre AS representante_venta,ci.nombre AS ciudad_oficina
+FROM  cliente AS c 
+JOIN empleado AS e
+ON c.fkCodigoEmpleadoRepVentas= e.id
+JOIN oficina AS o
+ON e.fkIdOficina=o.id
+JOIN ciudad AS ci
+ON o.fkIdCiudad=ci.id;
+
+```
+| nombre             | representante_venta | ciudad_oficina |
++--------------------+---------------------+----------------+
+| Empresa Alpha      | Juan                | Medellín       |
+| Industria Beta     | Maria               | Barcelona      |
+| Comercio Gamma     | Ana                 | Medellín       |
+| Servicios Delta    | Luis                | Barcelona      |
+| Tecnologia Epsilon | Elena               | Los Angeles    |
+| Distribuidora Zeta | Jorge               | Medellín       |
+| Fabricaciones Eta  | Silvia              | Barcelona      |
+| Consultoria Theta  | David               | Los Angeles    |
+| Desarrollos Iota   | Laura               | Medellín       |
+| Proyectos Kappa    | Pedro               | Barcelona      |
+| Soluciones Lambda  | Marta               | Los Angeles    |
+| Transporte Mu      | Alberto             | Medellín       |
+| Finanzas Nu        | Carmen              | Barcelona      |
+| Construcciones Xi  | Pablo               | Los Angeles    |
+| Alimentos Omicron  | Juan                | Medellín       |
+| Importaciones Pi   | María               | Barcelona      |
+| Exportaciones Rho  | Carlos              | Los Angeles    |
+| Agricultura Sigma  | Ana                 | Lima           |
+| Mineria Tau        | Luis                | Toronto        |
+| Energia Upsilon    | Sofía               | Bogotá         |
+| Quimica Phi        | Miguel              | Sevilla        |
+| Automotriz Chi     | Lucía               | Houston        |
+| Metales Psi        | Javier              | Cusco          |
+| Textiles Omega     | Isabel              | Montreal       |
+| Medicina Alpha2    | Diego               | Tunja          |
+| Educacion Beta2    | Natalia             | Valencia       |
+
+9. Devuelve un listado con el nombre de los empleados junto con el nombre
 de sus jefes.
-9. Devuelve un listado que muestre el nombre de cada empleados, el nombre
+10. Devuelve un listado que muestre el nombre de cada empleados, el nombre
 de su jefe y el nombre del jefe de sus jefe.
-10. Devuelve el nombre de los clientes a los que no se les ha entregado a
+11. Devuelve el nombre de los clientes a los que no se les ha entregado a
 tiempo un pedido.
-11. Devuelve un listado de las diferentes gamas de producto que ha comprado
+12. Devuelve un listado de las diferentes gamas de producto que ha comprado
 cada cliente.
