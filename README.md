@@ -610,5 +610,39 @@ WHERE p.fechaEsperada<p.fechaEntrega;
 15. Devuelve un listado de las diferentes gamas de producto que ha comprado
 cada cliente.
 
+```sql
+SELECT c.nombre,g.nombre
+FROM cliente AS c
+JOIN pedido AS p
+ON c.id=p.fkIdCodigoCliente
+JOIN detallepedido AS dp
+ON dp.fkIdPedido=p.id
+JOIN producto AS pr
+ON dp.fkIdProducto=pr.id
+JOIN gamaproducto AS g
+ON pr.fkIdGama=g.id;
+```
+| nombre             | nombre       |
+|--------------------|--------------|
+| Empresa Alpha      | Herbaceas    |
+| Empresa Alpha      | Herbaceas    |
+| Consultoria Theta  | Herbaceas    |
+| Consultoria Theta  | Herbaceas    |
+| Tecnologia Epsilon | Herbaceas    |
+| Desarrollos Iota   | Herbaceas    |
+| Empresa Alpha      | Herbaceas    |
+| Transporte Mu      | Herramientas |
+| Consultoria Theta  | Herramientas |
+| Servicios Delta    | Herramientas |
+| Distribuidora Zeta | Herramientas |
+| Desarrollos Iota   | Herramientas |
+| Empresa Alpha      | Herramientas |
+| Transporte Mu      | Aromáticas   |
+| Servicios Delta    | Aromáticas   |
+| Distribuidora Zeta | Aromáticas   |
+| Tecnologia Epsilon | Aromáticas   |
+| Proyectos Kappa    | Aromáticas   |
+| Consultoria Theta  | Ornamentales |
+| Proyectos Kappa    | Ornamentales |
 
 
