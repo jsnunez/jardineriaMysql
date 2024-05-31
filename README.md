@@ -86,7 +86,7 @@ WHERE fkIdJefe =7;
  ```
 
 | nombre | apellido1 | apellido2 | email                       |
-+--------+-----------+-----------+-----------------------------+
+|--------|-----------|-----------|-----------------------------|
 | Marta  | Ruiz      | Sanchez   | marta.ruiz@company.com      |
 | Pablo  | Hernandez | Garcia    | pablo.hernandez@company.com |
 | Lucía  | Sánchez   | Álvarez   | lucia.sanchez@empresa.com   |
