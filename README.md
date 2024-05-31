@@ -495,7 +495,7 @@ ON o.fkIdCiudad=ci.id;
 | Medicina Alpha2    | Diego               | Tunja          |
 | Educacion Beta2    | Natalia             | Valencia       |
 
-9. Devuelve un listado con el nombre de los empleados junto con el nombre
+8. Devuelve un listado con el nombre de los empleados junto con el nombre
 de sus jefes.
 
 
@@ -542,7 +542,7 @@ ON e1.id=e2.fkIdJefe;
 | José    | Ana         |
 | Raquel  | Luis        |
 
-11. Devuelve un listado que muestre el nombre de cada empleados, el nombre
+9. Devuelve un listado que muestre el nombre de cada empleados, el nombre
 de su jefe y el nombre del jefe de sus jefe.
 
 ```sql
@@ -592,7 +592,7 @@ ON e2.id=e3.fkIdJefe;
 | José             | Ana          | Ana          |
 | Raquel           | Luis         | Luis         |
 
-13. Devuelve el nombre de los clientes a los que no se les ha entregado a
+10. Devuelve el nombre de los clientes a los que no se les ha entregado a
 tiempo un pedido.
 
 ```sql
@@ -610,7 +610,7 @@ WHERE p.fechaEsperada<p.fechaEntrega;
 | Transporte Mu     | 2008-04-23    | 2008-04-25   |
 | Empresa Alpha     | 2012-06-15    | 2012-06-17   |
 
-15. Devuelve un listado de las diferentes gamas de producto que ha comprado
+11. Devuelve un listado de las diferentes gamas de producto que ha comprado
 cada cliente.
 
 ```sql
