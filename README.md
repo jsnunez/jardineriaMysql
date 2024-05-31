@@ -16,7 +16,7 @@ Texto
 Aquí tienes la tabla `oficinas` con sus datos:
 
 | id_oficina | nombre                 |
-|:-----------|-----------------------:|
+|------------|------------------------|
 |          1 | Medellín               |
 |         30 | Medellín               |
 |          2 | Barcelona              |
