@@ -1,3 +1,7 @@
+\begin{center}
+Texto
+
+
 1. Devuelve un listado con el código de oficina y la ciudad donde hay oficinas.
     ```sql
     SELECT o.id As id_oficina, c.nombre
@@ -646,3 +650,4 @@ ON pr.fkIdGama=g.id;
 | Proyectos Kappa    | Ornamentales |
 
 
+\end{center}
