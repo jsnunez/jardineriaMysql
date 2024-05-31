@@ -74,3 +74,19 @@ WHERE p.nombre='españa';
 | Madrid                 | 6677889900 |
 | Santiago de Compostela | 1122334455 |
 | Fuenlabrada            | 6677889900 |
+
+
+3. Devuelve un listado con el nombre, apellidos y email de los empleados cuyo
+jefe tiene un código de jefe igual a 7.
+
+ ```sql
+SELECT nombre, apellido1, apellido2, email
+FROM empleado
+WHERE fkIdJefe =7;
+ ```
+
+| nombre | apellido1 | apellido2 | email                       |
++--------+-----------+-----------+-----------------------------+
+| Marta  | Ruiz      | Sanchez   | marta.ruiz@company.com      |
+| Pablo  | Hernandez | Garcia    | pablo.hernandez@company.com |
+| Lucía  | Sánchez   | Álvarez   | lucia.sanchez@empresa.com   |
