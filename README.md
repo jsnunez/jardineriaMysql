@@ -50,3 +50,28 @@ Aquí tienes la tabla `oficinas` con sus datos:
 |         29 | Huancayo               |
 
 
+2. Devuelve un listado con la ciudad y el teléfono de las oficinas de España.
+
+ ```sql
+SELECT c.nombre As id_oficina, telo.numero
+FROM oficina AS o JOIN telefonoOficina AS telO
+ON o.id=telO.fkIdOficina
+JOIN ciudad AS c
+ON c.id=fkIdCiudad
+JOIN region AS r 
+ON r.id = c.fkidregion
+JOIN  pais AS p
+ON p.id=fkidpais
+WHERE p.nombre='españa';
+
+ ```
+|------------------------|------------|
+| id_oficina             | numero     |
+|------------------------|------------|
+| Barcelona              | 1122334455 |
+| Sevilla                | 6677889900 |
+| Valencia               | 1122334455 |
+| Madrid                 | 6677889900 |
+| Santiago de Compostela | 1122334455 |
+| Fuenlabrada            | 6677889900 |
+|------------------------|------------|
