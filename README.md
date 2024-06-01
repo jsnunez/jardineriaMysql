@@ -2,7 +2,7 @@
 
 
 1. Devuelve un listado con el código de oficina y la ciudad donde hay oficinas.
-    ```sql``
+    ```sql
     SELECT o.id As id_oficina, c.nombre
         FROM oficina AS o JOIN ciudad AS c
         ON c.id=fkIdCiudad;
