@@ -1404,3 +1404,149 @@ group by pa.fechaPago;
 | 2011-01-09 |         370.00 |  77.7000 |  447.7000 |
 | 2011-09-03 |         245.00 |  51.4500 |  296.4500 |
 | 2008-01-25 |         895.00 | 187.9500 | 1082.9500 |
+
+
+
+Subconsultas
+Con operadores básicos de comparación
+
+1. Devuelve el nombre del cliente con mayor límite de crédito.
+```sql
+SELECT nombre
+FROM cliente
+WHERE limiteCredito =( SELECT  max(limiteCredito) from cliente);
+```
+| nombre         |
++----------------+
+| Industria Beta |
+
+
+2. Devuelve el nombre del producto que tenga el precio de venta más caro.
+```sql
+SELECT nombre
+FROM producto
+WHERE precioVenta=( SELECT  max(precioVenta) from producto);
+```
+| nombre            |
++-------------------+
+| Árbol del Dinero  |
+
+
+3. Devuelve el nombre del producto del que se han vendido más unidades.
+(Tenga en cuenta que tendrá que calcular cuál es el número total de
+unidades que se han vendido de cada producto a partir de los datos de la
+tabla detalle_pedido)
+```sql
+SELECT p.nombre, sum(dp.cantidad)
+FROM producto p
+JOIN detallepedido dp
+on p.id=dp.fkIdProducto
+WHERE dp.cantidad= (SELECT MAX(dp.cantidad)
+                     FROM detallepedido dp)
+group by p.nombre ;
+```
+| nombre      | sum(dp.cantidad) |
++-------------+------------------+
+| Snake Plant |                6 |
+
+
+
+4. Los clientes cuyo límite de crédito sea mayor que los pagos que haya
+realizado. (Sin utilizar INNER JOIN).
+
+```sql
+SELECT id, Nombre
+FROM Cliente
+WHERE LimiteCredito > (
+    SELECT SUM(total)
+    FROM Pago
+    WHERE Pago.fkIdCodigoCliente = Cliente.id
+);
+```
+| id | Nombre             |
++----+--------------------+
+|  2 | Industria Beta     |
+|  5 | Tecnologia Epsilon |
+|  7 | Fabricaciones Eta  |
+|  8 | Consultoria Theta  |
+|  9 | Desarrollos Iota   |
+| 11 | Soluciones Lambda  |
+| 12 | Transporte Mu      |
+| 14 | Construcciones Xi  |
+| 15 | Alimentos Omicron  |
+| 17 | Exportaciones Rho  |
+| 18 | Agricultura Sigma  |
+| 19 | Mineria Tau        |
+| 20 | Energia Upsilon    |
+| 25 | Medicina Alpha2    |
+
+
+5. Devuelve el producto que más unidades tiene en stock.
+```sql
+SELECT nombre
+FROM producto
+WHERE cantidadEnStock = (SELECT max(cantidadEnStock) FROM producto);
+```
+| nombre          |
++-----------------+
+| Lirio de la Paz |
+
+
+6. Devuelve el producto que menos unidades tiene en stock.
+```sql
+SELECT nombre
+FROM producto
+WHERE cantidadEnStock = (SELECT min(cantidadEnStock) FROM producto);
+```
+| nombre      |
++-------------+
+| Boston Fern |
+
+
+
+7. Devuelve el nombre, los apellidos y el email de los empleados que están a
+cargo de Elena Hernandez.
+```sql
+SELECT concat(nombre,apellido1,apellido2) AS empleadosAcargo, email
+from empleado
+where fkIdJefe=(SELECT id from empleado where nombre ='Elena' ) AND apellido1='Hernandez';
+```
+| empleadosAcargo          | email                       |
++--------------------------+-----------------------------+
+| SofíaHernándezJiménez    | sofia.hernandez@empresa.com |
+
+Subconsultas con ALL y ANY
+
+
+
+8. Devuelve el nombre del cliente con mayor límite de crédito.
+```sql
+SELECT nombre
+FROM Cliente
+WHERE LimiteCredito >= ALL (SELECT LimiteCredito FROM Cliente);
+```
+
+| nombre         |
++----------------+
+| Industria Beta |
+
+
+9. Devuelve el nombre del producto que tenga el precio de venta más caro.
+```sql
+SELECT nombre
+FROM producto
+WHERE precioVenta>= ALL (SELECT precioVenta FROM producto);
+```
+| nombre            |
++-------------------+
+| Árbol del Dinero  |
+
+10. Devuelve el producto que menos unidades tiene en stock.
+```sql
+SELECT nombre
+FROM producto
+WHERE cantidadEnStock <= ANY (SELECT MIN(cantidadEnStock) FROM producto);
+```
+| nombre      |
++-------------+
+| Boston Fern |
