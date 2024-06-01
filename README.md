@@ -102,6 +102,9 @@ SELECT nombre, apellido1, apellido2, email
 FROM empleado
 WHERE fkIdJefe IS NULL;
  ```
+| nombre | apellido1 | apellido2 | email                  |
+|--------|-----------|-----------|------------------------|
+| Juan   | Perez     | Lopez     | juan.perez@company.com |
 
 5. Devuelve un listado con el nombre, apellidos y puesto de aquellos
 empleados que no sean representantes de ventas.
@@ -652,38 +655,752 @@ ON pr.fkIdGama=g.id;
 Consultas multitabla (Composición externa)
 Resuelva todas las consultas utilizando las cláusulas LEFT JOIN, RIGHT JOIN, NATURAL
 LEFT JOIN y NATURAL RIGHT JOIN.
-
-
 1. Devuelve un listado que muestre solamente los clientes que no han
 realizado ningún pago.
 
-SELECT
-FROM
-LEFT
+```sql
+SELECT c.nombre
+FROM cliente AS c
+LEFT JOIN pago AS p
+ON c.id = p.fkIdCodigoCliente
+WHERE p.idTransaccion is null;
+```
+| nombre             |
+|--------------------|
+| Empresa Alpha      |
+| Comercio Gamma     |
+| Servicios Delta    |
+| Distribuidora Zeta |
+| Proyectos Kappa    |
+| Finanzas Nu        |
+| Importaciones Pi   |
+| Textiles Omega     |
+| Educacion Beta2    |
 
-3. Devuelve un listado que muestre solamente los clientes que no han
+
+2. Devuelve un listado que muestre solamente los clientes que no han
 realizado ningún pedido.
-4. Devuelve un listado que muestre los clientes que no han realizado ningún
-pago y los que no han realizado ningún pedido.
-5. Devuelve un listado que muestre solamente los empleados que no tienen
-una oficina asociada.
-6. Devuelve un listado que muestre solamente los empleados que no tienen un
-cliente asociado.
-7. Devuelve un listado que muestre solamente los empleados que no tienen un
-cliente asociado junto con los datos de la oficina donde trabajan.
-8. Devuelve un listado que muestre los empleados que no tienen una oficina
-asociada y los que no tienen un cliente asociado.
-9. Devuelve un listado de los productos que nunca han aparecido en un
-pedido.
+```sql
+SELECT c.nombre
+FROM cliente AS c
+LEFT JOIN pedido AS p
+ON p.fkIdCodigoCliente=c.id
+WHERE  p.id is null;
+```
+| nombre            |
+|-------------------|
+| Comercio Gamma    |
+| Fabricaciones Eta |
+| Soluciones Lambda |
+| Construcciones Xi |
+| Exportaciones Rho |
+| Agricultura Sigma |
+| Mineria Tau       |
+| Quimica Phi       |
+| Automotriz Chi    |
+| Metales Psi       |
+| Textiles Omega    |
+| Medicina Alpha2   |
+| Educacion Beta2   |
 
-10. Devuelve un listado de los productos que nunca han aparecido en un
+
+
+3. Devuelve un listado que muestre los clientes que no han realizado ningún
+pago y los que no han realizado ningún pedido.
+```sql
+SELECT c.nombre AS Cliente
+FROM cliente AS c
+LEFT JOIN pedido AS p
+ON p.fkIdCodigoCliente=c.id
+LEFT JOIN pago AS pa
+ON pa.fkIdCodigoCliente=c.id
+WHERE p.id is null AND pa.idTransaccion is null;
+```
+
+| Cliente         |
+|-----------------|
+| Comercio Gamma  |
+| Textiles Omega  |
+| Educacion Beta2 |
+
+
+4. Devuelve un listado que muestre solamente los empleados que no tienen
+una oficina asociada.
+```sql
+SELECT e.nombre,o.id
+FROM empleado AS e
+left JOIN oficina AS o
+ON e.fkIdOficina=o.id
+WHERE o.id is null;
+```
+
+| nombre  | id   |
+|---------|------|
+| Pedro   | NULL |
+| Antonia | NULL |
+| Pedro   | NULL |
+
+
+5. Devuelve un listado que muestre solamente los empleados que no tienen un
+cliente asociado.
+```sql
+SELECT concat(e.nombre, ' ',e.apellido1) AS empleado
+FROM empleado AS e
+left JOIN cliente AS c
+ON c.fkCodigoEmpleadoRepVentas =e.id
+WHERE c.id is null;
+```
+
+| empleado          |
+|-------------------|
+| Carlos Pérez      |
+| Antonia López     |
+| Carlos Rodríguez  |
+| Ana González      |
+| Luis Martín       |
+| Sofía Hernández   |
+| Miguel Ruiz       |
+| Lucía Sánchez     |
+| Javier Ramírez    |
+| Isabel Torres     |
+| Diego Gutiérrez   |
+| Natalia Romero    |
+| Pedro Marín       |
+| Carmen Iglesias   |
+| Antonio Santos    |
+| Paula Medina      |
+| Manuel Guerrero   |
+| Sara Castro       |
+| José Vega         |
+| Raquel Suárez     |
+
+
+6. Devuelve un listado que muestre solamente los empleados que no tienen un
+cliente asociado junto con los datos de la oficina donde trabajan.
+
+```sql
+
+SELECT concat(e.nombre, ' ',e.apellido1) AS empleado, o.nombre
+FROM empleado AS e
+left JOIN cliente AS c
+ON c.fkCodigoEmpleadoRepVentas =e.id
+left JOIN oficina AS o
+ON e.fkIdOficina=o.id
+WHERE c.id is null;
+```
+
+| empleado          | nombre                    |
+|-------------------|---------------------------|
+| Carlos Pérez      | Oficina Medellín Centro   |
+| Antonia López     | NULL                      |
+| Carlos Rodríguez  | Oficina Los Angeles Oeste |
+| Ana González      | Oficina Lima Central      |
+| Luis Martín       | Oficina Toronto Este      |
+| Sofía Hernández   | Oficina Bogotá Norte      |
+| Miguel Ruiz       | Oficina Sevilla Sur       |
+| Lucía Sánchez     | Oficina Houston Central   |
+| Javier Ramírez    | Oficina Cusco Centro      |
+| Isabel Torres     | Oficina Montreal Sur      |
+| Diego Gutiérrez   | Oficina Tunja Centro      |
+| Natalia Romero    | Oficina Valencia Este     |
+| Pedro Marín       | NULL                      |
+| Carmen Iglesias   | Oficina Arequipa Sur      |
+| Antonio Santos    | Oficina Vancouver Norte   |
+| Paula Medina      | Oficina Bucaramanga Este  |
+| Manuel Guerrero   | Oficina Madrid Centro     |
+| Sara Castro       | Oficina Miami Beach       |
+| José Vega         | Oficina Piura Norte       |
+| Raquel Suárez     | Oficina Calgary Centro    |
+
+
+7. Devuelve un listado que muestre los empleados que no tienen una oficina
+asociada y los que no tienen un cliente asociado.
+```sql
+SELECT concat(e.nombre, ' ',e.apellido1) AS empleado, o.nombre
+FROM empleado AS e
+left JOIN cliente AS c
+ON c.fkCodigoEmpleadoRepVentas =e.id
+left JOIN oficina AS o
+ON e.fkIdOficina=o.id
+WHERE c.id is null AND o.id is null;
+
+```
+
+| empleado       | nombre |
+|----------------|--------|
+| Antonia López  | NULL   |
+| Pedro Marín    | NULL   |
+
+
+8. Devuelve un listado de los productos que nunca han aparecido en un
+pedido.
+```sql
+SELECT p.nombre
+FROM producto AS p
+left JOIN detallepedido AS d
+ON d.fkIdProducto=p.id
+WHERE d.cantidad is not null;
+```
+
+| nombre            |
+|-------------------|
+| Helecho de Boston |
+| Ficus             |
+| Calatea           |
+| Monstera          |
+| Snake Plant       |
+| Lirio de la Paz   |
+| Aloe Vera         |
+| Planta Araña      |
+| Planta ZZ         |
+| Rubber Plant      |
+| Boston Fern       |
+| Calathea          |
+| Dracaena          |
+| Bamboo Palm       |
+| Ficus             |
+| Monstera          |
+| Pothos            |
+| Dracaena          |
+| Philodendron      |
+| Orchid            |
+
+
+9. Devuelve un listado de los productos que nunca han aparecido en un
 pedido. El resultado debe mostrar el nombre, la descripción y la imagen del
 producto.
-11. Devuelve las oficinas donde no trabajan ninguno de los empleados que
+```sql
+
+SELECT p.nombre,p.descripcion, g.imagen
+FROM producto AS p
+left JOIN detallepedido AS d
+ON d.fkIdProducto=p.id
+JOIN gamaproducto AS g
+on g.id=p.fkIdGama
+WHERE d.cantidad is not null;
+```
+
+
+| nombre            | descripcion
+
+  | imagen           |
+|-------------------|-------------------------------------------------------------------------------------------------------------------------------------|------------------|
+| Pothos            | Epipremnum aureum, también conocido como potos dorado, es una especie de planta con flores en la familia de las aráceas.
+  | herbaceas.jpg    |
+| Dracaena          | Dracaena es un género de aproximadamente 120 especies de árboles y arbustos suculentos.
+  | herbaceas.jpg    |
+| Ficus             | Ficus es un género de aproximadamente 850 especies de árboles, arbustos, vides, epífitas y hemiepífitas en la familia Moraceae.     | herbaceas.jpg    |
+| Snake Plant       | Sansevieria es un género de aproximadamente 70 especies de plantas con flores, nativas de África, Madagascar y el sur de Asia.      | herbaceas.jpg    |
+| Rubber Plant      | Ficus elastica, el árbol del caucho, arbusto de caucho, planta de caucho o arbusto de caucho indio.
+  | herbaceas.jpg    |
+| Dracaena          | Dracaena es un género de aproximadamente 120 especies de árboles y arbustos suculentos.
+  | herbaceas.jpg    |
+| Ficus             | Ficus es un género de aproximadamente 850 especies de árboles, arbustos, vides, epífitas y hemiepífitas en la familia Moraceae.     | herbaceas.jpg    |
+| Orchid            | Orchidaceae, comúnmente conocida como la familia de las orquídeas, es una familia diversa y extendida de plantas con flores.        | Herramientas.jpg |
+| Helecho de Boston | Nephrolepis exaltata, conocido como el helecho de Boston, es una especie de helecho en la familia Lomariopsidaceae.
+  | Herramientas.jpg |
+| Monstera          | Monstera es un género de 45 especies de plantas con flores en la familia de las aráceas.
+  | Herramientas.jpg |
+| Planta Araña      | Chlorophytum comosum, a menudo llamada planta araña, es una especie de planta perenne con flores.                                   | Herramientas.jpg |
+| Bamboo Palm       | Chamaedorea seifrizii, la palma de bambú o palma de caña, es una especie de Chamaedorea.
+  | Herramientas.jpg |
+| Monstera          | Monstera es un género de 45 especies de plantas con flores en la familia de las aráceas.
+  | Herramientas.jpg |
+| Philodendron      | Philodendron es un gran género de plantas con flores en la familia Araceae.
+  | Aromáticas.jpg   |
+| Calatea           | Calathea es un género de plantas pertenecientes a la familia Marantaceae.
+  | Aromáticas.jpg   |
+| Aloe Vera         | Aloe vera es una especie de planta suculenta del género Aloe.
+  | Aromáticas.jpg   |
+| Planta ZZ         | Zamioculcas es un género de planta con flores en la familia Araceae, que contiene la única especie Zamioculcas zamiifolia.          | Aromáticas.jpg   |
+| Calathea          | Calathea es un género de plantas pertenecientes a la familia Marantaceae.
+  | Aromáticas.jpg   |
+| Lirio de la Paz   | Spathiphyllum es un género de aproximadamente 40 especies de plantas con flores comúnmente llamadas "lirios de la paz".
+  | NULL             |
+| Boston Fern       | Nephrolepis exaltata, conocido como el helecho de Boston, es una especie de helecho en la familia Lomariopsidaceae.
+  | NULL             |
+
+10. Devuelve las oficinas donde no trabajan ninguno de los empleados que
 hayan sido los representantes de ventas de algún cliente que haya realizado
 la compra de algún producto de la gama Frutales.
-12. Devuelve un listado con los clientes que han realizado algún pedido pero no
+```sql
+SELECT *
+FROM oficina o 
+WHERE o.codigo_oficina 
+NOT IN (SELECT DISTINCT ofi.id
+FROM oficina ofi
+JOIN empleado emp 
+on
+JOIN cliente cli 
+ON cli.fkCodigoEmpleadoRepVentas = emp.id
+JOIN pedido pe USING(codigo_cliente)
+JOIN detallepedido dp USING(codigo_pedido)
+JOIN producto prod USING(prod.id)
+                               WHERE prod.gama = 'Frutales')
+
+```
+
+11. Devuelve un listado con los clientes que han realizado algún pedido pero no
 han realizado ningún pago.
-13. Devuelve un listado con los datos de los empleados que no tienen clientes
+```sql
+SELECT c.nombre,p.fkIdCodigoCliente,pa.fkIdCodigoCliente
+FROM cliente AS c
+LEFT JOIN pedido AS p
+ON p.fkIdCodigoCliente=c.id
+LEFT JOIN pago AS pa
+on pa.fkIdCodigoCliente=c.id
+WHERE p.id is not null and pa.idtransaccion is null 
+group by c.id;
+```
+
+| nombre             | fkIdCodigoCliente | fkIdCodigoCliente |
+|--------------------|-------------------|-------------------|
+| Empresa Alpha      |                 1 |              NULL |
+| Servicios Delta    |                 4 |              NULL |
+| Distribuidora Zeta |                 6 |              NULL |
+| Proyectos Kappa    |                10 |              NULL |
+| Finanzas Nu        |                13 |              NULL |
+| Importaciones Pi   |                16 |              NULL |
+
+
+12. Devuelve un listado con los datos de los empleados que no tienen clientes
 asociados y el nombre de su jefe asociado.
 
+```sql
+SELECT e.nombre AS empleado ,e1.nombre AS jefe
+FROM empleado AS e
+LEFT JOIN cliente AS c
+ON c.fkCodigoEmpleadoRepVentas=e.id
+JOIN empleado AS e1
+on e.id=e1.fkIdJefe
+WHERE c.id is null;
+```
+
+| empleado | jefe   |
+|----------|--------|
+| Carlos   | Paula  |
+| Antonia  | Manuel |
+| Carlos   | Sara   |
+| Ana      | José   |
+| Luis     | Raquel |
+
+
+
+Consultas resumen
+1. ¿Cuántos empleados hay en la compañía?
+```sql
+SELECT count(id) from empleado;
+```
+
+| count(id) |
+|-----------|
+|        34 |
+
+
+2. ¿Cuántos clientes tiene cada país?
+```sql
+SELECT p.nombre, count(c.id) AS cantidadClientes
+FROM cliente AS c
+JOIN ciudad AS ci
+ON c.fkIdCiudad =ci.id
+JOIN region AS  r
+ON  ci.fkidregion=r.id
+JOIN pais AS p
+ON r.fkidpais = p.id
+group by p.Id
+;
+```
+
+| nombre   | cantidadClientes |
+|----------|------------------|
+| colombia |                6 |
+| españa   |                5 |
+| usa      |                5 |
+| peru     |                5 |
+| canada   |                5 |
+
+
+3. ¿Cuál fue el pago medio en 2009?
+```sql
+SELECT avg(total)
+FROM pago
+WHERE year(fechaPago) =2009;
+```
+
+| avg(total) |
+|------------|
+| 550.000000 |
+
+
+4. ¿Cuántos pedidos hay en cada estado? Ordena el resultado de forma
+descendente por el número de pedidos.
+```sql
+SELECT  r.nombre, count(p.id)
+FROM region AS r
+JOIN ciudad AS c
+ON c.fkidregion=r.id
+JOIN cliente AS cl
+ON cl.fkIdCiudad = c.id
+JOIN pedido AS p
+ON p.fkIdCodigoCliente=cl.id
+group by r.nombre
+ORDER BY  count(p.id) desc;
+```
+
+
+| nombre           | count(p.id) |
+|------------------|-------------|
+| Boyacá           |           4 |
+| Arequipa         |           2 |
+| British Columbia |           2 |
+| Florida          |           2 |
+| Piura            |           2 |
+| Valencia         |           1 |
+| Santander        |           1 |
+| Alberta          |           1 |
+| Basque Country   |           1 |
+| Illinois         |           1 |
+| Nova Scotia      |           1 |
+| Caldas           |           1 |
+| Manitoba         |           1 |
+
+```
+
+5. Calcula el precio de venta del producto más caro y más barato en una
+misma consulta.
+```sql
+SELECT max(precioVenta) AS masCaro ,min(precioVenta) AS masBarato
+FROM producto;
+```
+
+| masCaro | masBarato |
+|---------|-----------|
+|  240.00 |     50.00 |
+
+
+6. Calcula el número de clientes que tiene la empresa.
+```sql
+SELECT count(id) AS numeroClientes
+FROM cliente;
+```
+
+| numeroClientes |
+|----------------|
+|             26 |
+
+
+7. ¿Cuántos clientes existen con domicilio en la ciudad de Madrid?
+```sql
+SELECT count(ci.nombre) AS clientesEnMadrid
+FROM cliente as c
+JOIN ciudad as ci
+ON c.fkIdCiudad=ci.id
+WHERE ci.nombre='madrid';
+```
+
+| clientesEnMadrid |
+|------------------|
+|                3 |
+
+
+8. ¿Calcula cuántos clientes tiene cada una de las ciudades que empiezan
+por M?
+```sql
+SELECT ci.nombre,count(c.id)
+FROM cliente as c
+JOIN ciudad as ci
+ON c.fkIdCiudad=ci.id
+WHERE c.nombre LIKE 'M%'
+GROUP BY ci.id;
+```
+
+| nombre  | count(c.id) |
+|---------|-------------|
+| Piura   |           1 |
+| Chicago |           1 |
+| Halifax |           1 |
+
+
+9. Devuelve el nombre de los representantes de ventas y el número de clientes
+al que atiende cada uno.
+```sql
+SELECT e.nombre AS representanteVenta, count(c.id) AS cliente
+FROM empleado AS e
+JOIN cliente AS c
+ON e.id=c.fkCodigoEmpleadoRepVentas
+group by e.nombre;
+```
+
+| representanteVenta | cliente |
+|--------------------|---------|
+| Juan               |       2 |
+| Maria              |       3 |
+| Ana                |       2 |
+| Luis               |       1 |
+| Elena              |       4 |
+| Jorge              |       2 |
+| Silvia             |       1 |
+| David              |       2 |
+| Laura              |       1 |
+| Pedro              |       1 |
+| Marta              |       3 |
+| Alberto            |       1 |
+| Carmen             |       1 |
+| Pablo              |       2 |
+
+10. Calcula el número de clientes que no tiene asignado representante de
+ventas.
+```sql
+SELECT count(c.nombre) AS clienteNoTieneRep
+FROM cliente AS c
+left JOIN  empleado AS e
+ON e.id=c.fkCodigoEmpleadoRepVentas
+WHERE  e.id is null;
+```
+
+| clienteNoTieneRep |
+|-------------------|
+|                 3 |
+
+
+11. Calcula la fecha del primer y último pago realizado por cada uno de los
+clientes. El listado deberá mostrar el nombre y los apellidos de cada cliente.
+```sql
+SELECT c.nombre,min(p.fechaPago),max(p.fechaPago)
+FROM pago AS p
+JOIN cliente AS c
+ON p.fkIdCodigoCliente=c.id
+group by c.id;
+```
+
+| nombre             | min(p.fechaPago) | max(p.fechaPago) |
+|--------------------|------------------|------------------|
+| Fabricaciones Eta  | 2008-01-17       | 2008-01-17       |
+| Transporte Mu      | 2008-01-25       | 2008-01-25       |
+| Medicina Alpha2    | 2008-02-11       | 2012-12-11       |
+| Tecnologia Epsilon | 2008-10-11       | 2011-01-09       |
+| Alimentos Omicron  | 2008-07-12       | 2008-07-12       |
+| Energia Upsilon    | 2009-06-29       | 2010-10-30       |
+| Consultoria Theta  | 2010-02-14       | 2010-02-14       |
+| Agricultura Sigma  | 2010-04-21       | 2010-04-21       |
+| Automotriz Chi     | 2010-08-08       | 2012-05-12       |
+| Construcciones Xi  | 2011-04-16       | 2011-04-16       |
+| Quimica Phi        | 2011-06-25       | 2011-06-25       |
+| Desarrollos Iota   | 2011-09-03       | 2011-09-03       |
+| Exportaciones Rho  | 2011-12-20       | 2011-12-20       |
+| Metales Psi        | 2012-03-05       | 2012-03-05       |
+| Soluciones Lambda  | 2012-08-19       | 2012-08-19       |
+| Mineria Tau        | 2012-10-28       | 2012-10-28       |
+| Industria Beta     | 2012-12-31       | 2012-12-31       |
+
+;
+
+12. Calcula el número de productos diferentes que hay en cada uno de los
+pedidos.
+```sql
+SELECT pe.id, COUNT(DISTINCT pr.id) AS 'Cantidad de productos distintos'
+FROM (producto AS pr 
+JOIN detallepedido AS dp 
+ON pr.id = dp.fkIdPedido)
+JOIN pedido AS pe 
+ON dp.fkIdPedido = pe.id
+GROUP BY pe.id;
+```
+
+| id | Cantidad de productos distintos |
+|----|---------------------------------|
+|  3 |                               1 |
+|  4 |                               1 |
+|  5 |                               1 |
+|  6 |                               1 |
+|  7 |                               1 |
+|  8 |                               1 |
+|  9 |                               1 |
+| 10 |                               1 |
+| 11 |                               1 |
+| 12 |                               1 |
+
+
+13. Calcula la suma de la cantidad total de todos los productos que aparecen en
+cada uno de los pedidos.
+```sql
+SELECT p.nombre, sum(dp.fkIdProducto) AS sumaProducto
+FROM producto AS p
+JOIN detallepedido AS dp
+ON p.id=dp.fkIdProducto
+group by p.id;
+```
+
+
+| nombre            | sumaProducto |
+|-------------------|--------------|
+| Pothos            |            1 |
+| Dracaena          |            2 |
+| Philodendron      |            3 |
+| Orchid            |            4 |
+| Helecho de Boston |            5 |
+| Ficus             |            6 |
+| Calatea           |            7 |
+| Monstera          |            8 |
+| Snake Plant       |            9 |
+| Lirio de la Paz   |           10 |
+| Aloe Vera         |           11 |
+| Planta Araña      |           12 |
+| Planta ZZ         |           13 |
+| Rubber Plant      |           14 |
+| Boston Fern       |           15 |
+| Calathea          |           16 |
+| Dracaena          |           17 |
+| Bamboo Palm       |           18 |
+| Ficus             |           19 |
+| Monstera          |           20 |
+
+14. Devuelve un listado de los 20 productos más vendidos y el número total de
+unidades que se han vendido de cada uno. El listado deberá estar ordenado
+por el número total de unidades vendidas.
+
+```sql
+SELECT p.nombre, sum(dp.fkIdProducto) AS sumaProducto
+FROM producto AS p
+JOIN detallepedido AS dp
+ON p.id=dp.fkIdProducto
+group by p.id
+order by sumaProducto desc
+limit 20;
+```
+
+| nombre            | sumaProducto |
+|-------------------|--------------|
+| Monstera          |           20 |
+| Ficus             |           19 |
+| Bamboo Palm       |           18 |
+| Dracaena          |           17 |
+| Calathea          |           16 |
+| Boston Fern       |           15 |
+| Rubber Plant      |           14 |
+| Planta ZZ         |           13 |
+| Planta Araña      |           12 |
+| Aloe Vera         |           11 |
+| Lirio de la Paz   |           10 |
+| Snake Plant       |            9 |
+| Monstera          |            8 |
+| Calatea           |            7 |
+| Ficus             |            6 |
+| Helecho de Boston |            5 |
+| Orchid            |            4 |
+| Philodendron      |            3 |
+| Dracaena          |            2 |
+| Pothos            |            1 |
+
+
+15. La facturación que ha tenido la empresa en toda la historia, indicando la
+base imponible, el IVA y el total facturado. La base imponible se calcula
+sumando el coste del producto por el número de unidades vendidas de la
+tabla detalle_pedido. El IVA es el 21 % de la base imponible, y el total la
+suma de los dos campos anteriores.
+```sql
+SELECT SUM(dp.precioUnidad * dp.cantidad) AS 'Base Imponible', 
+       SUM((dp.precioUnidad * dp.cantidad) * 0.21) AS 'IVA', 
+       SUM(dp.precioUnidad * dp.cantidad | ((dp.precioUnidad * dp.cantidad) * 0.21)) AS 'Total'
+FROM ((((producto pr 
+JOIN detallepedido dp 
+ON pr.id = dp.fkIdPedido)
+                  JOIN pedido pe ON dp.fkIdPedido = pe.id)
+                 JOIN cliente c ON c.id = pe.fkIdCodigoCliente)
+JOIN pago pa ON pa.fkIdCodigoCliente = c.id);
+
+```
+
+| Base Imponible | IVA      | Total     |
+|----------------|----------|-----------|
+|        2330.00 | 489.3000 | 2819.3000 |
+
+
+
+
+
+16. La misma información que en la pregunta anterior, pero agrupada por
+código de producto.
+```sql
+SELECT pr.nombre, SUM(dp.precioUnidad * dp.cantidad) AS 'Base Imponible', 
+       SUM((dp.precioUnidad * dp.cantidad) * 0.21) AS 'IVA', 
+       SUM(dp.precioUnidad * dp.cantidad | ((dp.precioUnidad * dp.cantidad) * 0.21)) AS 'Total'
+FROM ((((producto pr 
+JOIN detallepedido dp 
+ON pr.id = dp.fkIdPedido)
+                  JOIN pedido pe ON dp.fkIdPedido = pe.id)
+                 JOIN cliente c ON c.id = pe.fkIdCodigoCliente)
+JOIN pago pa ON pa.fkIdCodigoCliente = c.id)
+group by pr.id;
+```
+
+| nombre            | Base Imponible | IVA      | Total     |
+|-------------------|----------------|----------|-----------|
+| Philodendron      |         120.00 |  25.2000 |  145.2000 |
+| Helecho de Boston |         330.00 |  69.3000 |  399.3000 |
+| Calatea           |         740.00 | 155.4000 |  895.4000 |
+| Snake Plant       |         245.00 |  51.4500 |  296.4500 |
+| Planta Araña      |         895.00 | 187.9500 | 1082.9500 |
+
+17. La misma información que en la pregunta anterior, pero agrupada por
+código de producto filtrada por los códigos que empiecen por OR.
+```sql
+
+SELECT pr.nombre, SUM(dp.precioUnidad * dp.cantidad) AS 'Base Imponible', 
+       SUM((dp.precioUnidad * dp.cantidad) * 0.21) AS 'IVA', 
+       SUM(dp.precioUnidad * dp.cantidad | ((dp.precioUnidad * dp.cantidad) * 0.21)) AS 'Total'
+FROM ((((producto pr 
+JOIN detallepedido dp 
+ON pr.id = dp.fkIdPedido)
+                  JOIN pedido pe ON dp.fkIdPedido = pe.id)
+                 JOIN cliente c ON c.id = pe.fkIdCodigoCliente)
+JOIN pago pa ON pa.fkIdCodigoCliente = c.id)
+where pr.nombre like 'or%'
+group by pr.id;
+```
+
+Empty set (0.00 sec)
+
+
+18. Lista las ventas totales de los productos que hayan facturado más de 3000
+euros. Se mostrará el nombre, unidades vendidas, total facturado y total
+facturado con impuestos (21% IVA).
+```sql
+
+SELECT pr.nombre, SUM(dp.precioUnidad * dp.cantidad) AS 'Base Imponible', 
+       SUM((dp.precioUnidad * dp.cantidad) * 0.21) AS 'IVA', 
+       SUM(dp.precioUnidad * dp.cantidad | ((dp.precioUnidad * dp.cantidad) * 0.21)) AS Total
+FROM ((((producto pr 
+JOIN detallepedido dp 
+ON pr.id = dp.fkIdPedido)
+                  JOIN pedido pe ON dp.fkIdPedido = pe.id)
+                 JOIN cliente c ON c.id = pe.fkIdCodigoCliente)
+JOIN pago pa ON pa.fkIdCodigoCliente = c.id)
+where  Total>3000
+group by pr.id;
+```
+
+Empty set (0.00 sec)
+
+19. Muestre la suma total de todos los pagos que se realizaron para cada uno
+de los años que aparecen en la tabla pagos.
+
+```sql
+SELECT pa.fechaPago, SUM(dp.precioUnidad * dp.cantidad) AS 'Base Imponible', 
+       SUM((dp.precioUnidad * dp.cantidad) * 0.21) AS 'IVA', 
+       SUM(dp.precioUnidad * dp.cantidad | ((dp.precioUnidad * dp.cantidad) * 0.21)) AS 'Total'
+FROM ((((producto pr 
+JOIN detallepedido dp 
+ON pr.id = dp.fkIdPedido)
+                  JOIN pedido pe ON dp.fkIdPedido = pe.id)
+                 JOIN cliente c ON c.id = pe.fkIdCodigoCliente)
+JOIN pago pa ON pa.fkIdCodigoCliente = c.id)
+group by pa.fechaPago;
+```
+| fechaPago  | Base Imponible | IVA      | Total     |
+|------------|----------------|----------|-----------|
+| 2010-02-14 |         450.00 |  94.5000 |  544.5000 |
+| 2008-10-11 |         370.00 |  77.7000 |  447.7000 |
+| 2011-01-09 |         370.00 |  77.7000 |  447.7000 |
+| 2011-09-03 |         245.00 |  51.4500 |  296.4500 |
+| 2008-01-25 |         895.00 | 187.9500 | 1082.9500 |
