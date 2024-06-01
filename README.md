@@ -2,7 +2,7 @@
 
 
 1. Devuelve un listado con el código de oficina y la ciudad donde hay oficinas.
-    ```sql
+    ```sql``
     SELECT o.id As id_oficina, c.nombre
         FROM oficina AS o JOIN ciudad AS c
         ON c.id=fkIdCiudad;
@@ -114,7 +114,35 @@ SELECT nombre, apellido1, apellido2, email
 FROM empleado
 WHERE fkIdJefe <> 1 ;
  ```
-
+| nombre  | apellido1  | apellido2  | email                        |
++---------+------------+------------+------------------------------+
+| Luis    | Lopez      | Perez      | luis.lopez@company.com       |
+| Elena   | Hernandez  | Gonzalez   | elena.hernandez@company.com  |
+| Silvia  | Martinez   | Ramirez    | silvia.martinez@company.com  |
+| David   | Sanchez    | Fernandez  | david.sanchez@company.com    |
+| Pedro   | Diaz       | Ruiz       | pedro.diaz@company.com       |
+| Marta   | Ruiz       | Sanchez    | marta.ruiz@company.com       |
+| Carmen  | Gomez      | Lopez      | carmen.gomez@company.com     |
+| Pablo   | Hernandez  | Garcia     | pablo.hernandez@company.com  |
+| Carlos  | Pérez      | García     | juan.perez@empresa.com       |
+| Carlos  | Rodríguez  | Fernández  | carlos.rodriguez@empresa.com |
+| Ana     | González   | Hernández  | ana.gonzalez@empresa.com     |
+| Luis    | Martín     | Gómez      | luis.martin@empresa.com      |
+| Sofía   | Hernández  | Jiménez    | sofia.hernandez@empresa.com  |
+| Miguel  | Ruiz       | Díaz       | miguel.ruiz@empresa.com      |
+| Lucía   | Sánchez    | Álvarez    | lucia.sanchez@empresa.com    |
+| Javier  | Ramírez    | Castillo   | javier.ramirez@empresa.com   |
+| Isabel  | Torres     | Ortiz      | isabel.torres@empresa.com    |
+| Diego   | Gutiérrez  | Silva      | diego.gutierrez@empresa.com  |
+| Natalia | Romero     | Ramos      | natalia.romero@empresa.com   |
+| Pedro   | Marín      | Vargas     | pedro.marin@empresa.com      |
+| Carmen  | Iglesias   | Morales    | carmen.iglesias@empresa.com  |
+| Antonio | Santos     | Pérez      | antonio.santos@empresa.com   |
+| Paula   | Medina     | Mendoza    | paula.medina@empresa.com     |
+| Manuel  | Guerrero   | Cruz       | manuel.guerrero@empresa.com  |
+| Sara    | Castro     | Herrera    | sara.castro@empresa.com      |
+| José    | Vega       | Flores     | jose.vega@empresa.com        |
+| Raquel  | Suárez     | Campos     | raquel.suarez@empresa.com    |
 
 
 6. Devuelve un listado con el nombre de los todos los clientes españoles.
@@ -132,7 +160,13 @@ ON p.id=fkidpais
 WHERE p.nombre='españa';
 ```
 
-
+| Nombre_Cliente    | pais    |
++-------------------+---------+
+| Industria Beta    | españa  |
+| Automotriz Chi    | españa  |
+| Fabricaciones Eta | españa  |
+| Transporte Mu     | españa  |
+| Exportaciones Rho | españa  |
 
 7. Devuelve un listado con los distintos estados por los que puede pasar un
 pedido.
@@ -140,6 +174,12 @@ pedido.
 ```sql
 select nombre from estado;
 ```
+| nombre    |
++-----------+
+| Entregado |
+| Rechazado |
+| Pendiente |
+
 
 8. Devuelve un listado con el código de cliente de aquellos clientes que
 realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar
@@ -152,6 +192,14 @@ FROM pago
 WHERE year(fechaPago)='2008'
 GROUP BY idTransaccion ;
 ```
+| idTransaccion |
++---------------+
+|             1 |
+|             2 |
+|             3 |
+|             4 |
+|             5 |
+|             6 |
 
 • Utilizando la función DATE_FORMAT de MySQL.
 ```sql
@@ -160,6 +208,16 @@ FROM pago
 WHERE DATE_FORMAT(fechaPago,"%Y")='2008'
 GROUP BY idTransaccion;
 ```
+
+| idTransaccion |
++---------------+
+|             1 |
+|             2 |
+|             3 |
+|             4 |
+|             5 |
+|             6 |
+
 • Sin utilizar ninguna de las funciones anteriores.
 
 ```sql
@@ -167,6 +225,14 @@ SELECT  idTransaccion
 FROM pago
 WHERE fechaPago<'2009,01,01';
 ```
+| idTransaccion |
++---------------+
+|             1 |
+|             2 |
+|             3 |
+|             4 |
+|             5 |
+|             6 |
 
 9. Devuelve un listado con el código de pedido, código de cliente, fecha
 esperada y fecha de entrega de los pedidos que no han sido entregados a
@@ -177,7 +243,13 @@ SELECT p.id AS codigo_pedido, p.fkIdCodigoCliente,p.fechaEsperada,p.fechaEntrega
 FROM pedido p
 WHERE p.fechaEntrega> p.fechaEsperada;
 ```
-
+| codigo_pedido | fkIdCodigoCliente | fechaEsperada | fechaEntrega |
++---------------+-------------------+---------------+--------------+
+|             3 |                 8 | 2009-05-25    | 2009-05-28   |
+|             5 |                 8 | 2010-09-17    | 2010-09-25   |
+|            11 |                 1 | 2008-03-02    | 2008-03-05   |
+|            12 |                12 | 2008-04-23    | 2008-04-25   |
+|            19 |                 1 | 2012-06-15    | 2012-06-17   |
 10. Devuelve un listado con el código de pedido, código de cliente, fecha
 esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al
 menos dos días antes de la fecha esperada.
@@ -188,14 +260,46 @@ FROM pedido p
 WHERE ADDDATE(p.fechaEsperada, INTERVAL 2 DAY)>p.fechaEntrega
  ;
 ```
-
+| codigo_pedido | fkIdCodigoCliente | fechaEsperada | fechaEntrega |
++---------------+-------------------+---------------+--------------+
+|             1 |                 1 | 2008-01-20    | 2008-01-18   |
+|             2 |                 2 | 2008-03-15    | 2008-03-13   |
+|             4 |                 4 | 2009-07-30    | 2009-07-28   |
+|             6 |                 6 | 2010-11-15    | 2010-11-12   |
+|             7 |                 5 | 2011-01-10    | 2011-01-08   |
+|             8 |                10 | 2011-03-25    | 2011-03-22   |
+|             9 |                 9 | 2012-05-23    | 2012-05-20   |
+|            10 |                 1 | 2012-07-19    | 2012-07-17   |
+|            13 |                13 | 2009-06-10    | 2009-06-08   |
+|            14 |                 4 | 2009-08-24    | 2009-08-21   |
+|            15 |                 5 | 2010-10-30    | 2010-10-27   |
+|            16 |                16 | 2010-12-19    | 2010-12-16   |
+|            17 |                15 | 2011-03-05    | 2011-03-03   |
+|            18 |                 9 | 2011-04-21    | 2011-04-18   |
+|            20 |                20 | 2012-08-29    | 2012-08-27   |
 • Utilizando la función DATEDIFF de MySQL.
 ```sql
 SELECT  p.id AS codigo_pedido, p.fkIdCodigoCliente,p.fechaEsperada,p.fechaEntrega
 FROM pedido p
 WHERE DATEDIFF(p.fechaEsperada,p.fechaEntrega) >= 2 ;
 ```
-
+| codigo_pedido | fkIdCodigoCliente | fechaEsperada | fechaEntrega |
++---------------+-------------------+---------------+--------------+
+|             1 |                 1 | 2008-01-20    | 2008-01-18   |
+|             2 |                 2 | 2008-03-15    | 2008-03-13   |
+|             4 |                 4 | 2009-07-30    | 2009-07-28   |
+|             6 |                 6 | 2010-11-15    | 2010-11-12   |
+|             7 |                 5 | 2011-01-10    | 2011-01-08   |
+|             8 |                10 | 2011-03-25    | 2011-03-22   |
+|             9 |                 9 | 2012-05-23    | 2012-05-20   |
+|            10 |                 1 | 2012-07-19    | 2012-07-17   |
+|            13 |                13 | 2009-06-10    | 2009-06-08   |
+|            14 |                 4 | 2009-08-24    | 2009-08-21   |
+|            15 |                 5 | 2010-10-30    | 2010-10-27   |
+|            16 |                16 | 2010-12-19    | 2010-12-16   |
+|            17 |                15 | 2011-03-05    | 2011-03-03   |
+|            18 |                 9 | 2011-04-21    | 2011-04-18   |
+|            20 |                20 | 2012-08-29    | 2012-08-27   |
 11. Devuelve un listado de todos los pedidos que fueron rechazados en 2009.
 ```sql
 SELECT p.id AS codigo_pedido
@@ -203,7 +307,9 @@ FROM pedido AS p JOIN estado AS e
 ON p.fkIdEstado=e.id
 WHERE e.nombre='rechazado' and year(fechaPedido) = '2009';
 ```
-
+| codigo_pedido |
++---------------+
+|            14 |
 12. Devuelve un listado de todos los pedidos que han sido entregados en el
 mes de enero de cualquier año.
 ```sql
@@ -211,6 +317,10 @@ SELECT p.id AS codigo_pedido, p.fechaEntrega
 FROM pedido AS p 
 WHERE MONTH(fechaEntrega)= '01';
 ```
+| codigo_pedido | fechaEntrega |
++---------------+--------------+
+|             1 | 2008-01-18   |
+|             7 | 2011-01-08   |
 13. Devuelve un listado con todos los pagos que se realizaron en el
 año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
 
@@ -222,6 +332,14 @@ WHERE f.nombre='Paypal' AND YEAR(fechaPago)=2008
 ORDER BY p.total DESC;
 ```
 
+| total    | idTransaccion | forma_pago |
++----------+---------------+------------+
+| 30000.00 |             2 | Paypal     |
+| 20000.00 |             4 | Paypal     |
+|  2600.00 |             5 | Paypal     |
+|  2010.00 |             3 | Paypal     |
+
+
 14. Devuelve un listado con todas las formas de pago que aparecen en la
 tabla pago. Tenga en cuenta que no deben aparecer formas de pago
 repetidas.
@@ -232,6 +350,13 @@ FROM pago AS p JOIN formapago AS f
 ON p.fkFormaPago=f.id
 GROUP BY f.id;
 ```
+| nombre          |
++-----------------+
+| Paypal          |
+| Nequi           |
+| Tarjeta credito |
+| Tarjeta débito  |
+| PSE             |
 
 15. Devuelve un listado con todos los productos que pertenecen a la
 gama Ornamentales y que tienen más de 100 unidades en stock. El listado
@@ -244,6 +369,12 @@ FROM gamaproducto AS g JOIN producto AS p
 ON  g.id =p.fkIdGama
 WHERE g.nombre='ornamentales' AND cantidadEnStock > 100 ;
 ```
+| nombre     | cantidadEnStock |
++------------+-----------------+
+| Filodendro |             150 |
+| Planta ZZ  |             270 |
+| Anturio    |             240 |
+
 
 16. Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y
 cuyo representante de ventas tenga el código de empleado 11 o 30.
@@ -254,6 +385,7 @@ FROM  cliente AS c JOIN ciudad AS ci
 ON c.fkIdCiudad= ci.id
 WHERE ci.nombre = 'madrid' AND fkCodigoEmpleadoRepVentas =11 OR fkCodigoEmpleadoRepVentas =30;
 ```
+Empty set (0.00 sec)
 
 Consultas multitabla (Composición interna)
 Resuelva todas las consultas utilizando la sintaxis de SQL1 y SQL2. Las consultas con
@@ -1550,3 +1682,363 @@ WHERE cantidadEnStock <= ANY (SELECT MIN(cantidadEnStock) FROM producto);
 | nombre      |
 |-------------|
 | Boston Fern |
+
+Subconsultas con IN y NOT IN
+11. Devuelve el nombre, apellido1 y cargo de los empleados que no
+representen a ningún cliente.
+```sql	
+SELECT e.nombre,e.apellido1,p.nombre AS puesto
+FROM empleado AS e
+JOIN puesto AS p
+ON e.fkPuesto =p.id
+WHERE e.id  not  IN (SELECT fkCodigoEmpleadoRepVentas from cliente   );
+```
+| nombre  | apellido1  | puesto                  |
+|---------|------------|-------------------------|
+| Carlos  | Pérez      | Representante de Ventas |
+| Carlos  | Rodríguez  | Representante de Ventas |
+| Luis    | Martín     | Representante de Ventas |
+| Miguel  | Ruiz       | Representante de Ventas |
+| Javier  | Ramírez    | Representante de Ventas |
+| Diego   | Gutiérrez  | Representante de Ventas |
+| Pedro   | Marín      | Representante de Ventas |
+| Antonio | Santos     | Representante de Ventas |
+| Manuel  | Guerrero   | Representante de Ventas |
+| José    | Vega       | Representante de Ventas |
+| Antonia | López      | Gerente de Ventas       |
+| Ana     | González   | Gerente de Ventas       |
+| Sofía   | Hernández  | Gerente de Ventas       |
+| Lucía   | Sánchez    | Gerente de Ventas       |
+| Isabel  | Torres     | Gerente de Ventas       |
+| Natalia | Romero     | Gerente de Ventas       |
+| Carmen  | Iglesias   | Gerente de Ventas       |
+| Paula   | Medina     | Gerente de Ventas       |
+| Sara    | Castro     | Gerente de Ventas       |
+| Raquel  | Suárez     | Gerente de Ventas       |
+
+
+12. Devuelve un listado que muestre solamente los clientes que no han
+realizado ningún pago.
+```sql
+SELECT nombre AS cliente
+from cliente
+where id in (SELECT fkIdCodigoCliente from pago);
+```
+| cliente            |
+|--------------------|
+| Empresa Alpha      |
+| Comercio Gamma     |
+| Servicios Delta    |
+| Distribuidora Zeta |
+| Proyectos Kappa    |
+| Finanzas Nu        |
+| Importaciones Pi   |
+| Textiles Omega     |
+| Educacion Beta2    |
+
+
+13. Devuelve un listado que muestre solamente los clientes que sí han realizado
+algún pago.
+```sql
+SELECT nombre AS cliente
+from cliente
+where id in (SELECT fkIdCodigoCliente from pago);
+```
+| cliente            |
+|--------------------|
+| Industria Beta     |
+| Tecnologia Epsilon |
+| Fabricaciones Eta  |
+| Consultoria Theta  |
+| Desarrollos Iota   |
+| Soluciones Lambda  |
+| Transporte Mu      |
+| Construcciones Xi  |
+| Alimentos Omicron  |
+| Exportaciones Rho  |
+| Agricultura Sigma  |
+| Mineria Tau        |
+| Energia Upsilon    |
+| Quimica Phi        |
+| Automotriz Chi     |
+| Metales Psi        |
+| Medicina Alpha2    |
+
+
+14. Devuelve un listado de los productos que nunca han aparecido en un
+pedido.
+```sql
+SELECT nombre AS productos
+FROM  producto
+WHERE id not in (SELECT fkIdProducto from detallepedido );
+```
+| productos                |
+|--------------------------|
+| Filodendro               |
+| Sansevieria              |
+| Lirio de la Paz          |
+| Aloe Vera                |
+| Poto                     |
+| Planta Araña             |
+| Planta ZZ                |
+| Planta de Caucho         |
+| Helecho de Boston        |
+| Calatea                  |
+| Drácena                  |
+| Palma de Bambú           |
+| Ave del Paraíso          |
+| Planta de Interior China |
+| Orquídea                 |
+| Anturio                  |
+| Bambú de la Suerte       |
+| Árbol del Dinero         |
+
+
+15. Devuelve el nombre, apellidos, puesto y teléfono de la oficina de aquellos
+empleados que no sean representante de ventas de ningún cliente.
+```sql
+SELECT concat(e.nombre,e.apellido1),p.nombre AS puesto,t.numero
+FROM empleado AS e
+JOIN puesto AS p
+ON e.fkPuesto =p.id
+JOIN oficina AS o
+ON  e.fkIdOficina=o.id
+JOIN telefonooficina AS t
+ON t.fkIdOficina=o.id
+WHERE e.id not in (SELECT fkCodigoEmpleadoRepVentas from cliente);
+```
+| concat(e.nombre,e.apellido1) | puesto                  | numero     |
+|------------------------------|-------------------------|------------|
+| CarlosPérez                  | Representante de Ventas | 1234567890 |
+| CarlosPérez                  | Representante de Ventas | 0987654321 |
+| CarlosRodríguez              | Representante de Ventas | 2233445566 |
+| LuisMartín                   | Representante de Ventas | 4455667788 |
+| MiguelRuiz                   | Representante de Ventas | 6677889900 |
+| JavierRamírez                | Representante de Ventas | 8899001122 |
+| DiegoGutiérrez               | Representante de Ventas | 0011223344 |
+| AntonioSantos                | Representante de Ventas | 4455667788 |
+| ManuelGuerrero               | Representante de Ventas | 6677889900 |
+| JoséVega                     | Representante de Ventas | 8899001122 |
+| AnaGonzález                  | Gerente de Ventas       | 3344556677 |
+| SofíaHernández               | Gerente de Ventas       | 5566778899 |
+| LucíaSánchez                 | Gerente de Ventas       | 7788990011 |
+| IsabelTorres                 | Gerente de Ventas       | 9900112233 |
+| NataliaRomero                | Gerente de Ventas       | 1122334455 |
+| CarmenIglesias               | Gerente de Ventas       | 3344556677 |
+| PaulaMedina                  | Gerente de Ventas       | 5566778899 |
+| SaraCastro                   | Gerente de Ventas       | 7788990011 |
+| RaquelSuárez                 | Gerente de Ventas       | 9900112233 |
+
+
+16. Devuelve las oficinas donde no trabajan ninguno de los empleados que
+hayan sido los representantes de ventas de algún cliente que haya realizado
+la compra de algún producto de la gama Frutales.
+
+```sql
+SELECT o.Nombre  AS oficina
+FROM Oficina AS o
+WHERE o.id NOT IN (
+    SELECT e.fkIdOficina
+    FROM Empleado AS e
+    WHERE e.id IN (
+        SELECT c.fkCodigoEmpleadoRepVentas
+        FROM Cliente AS c
+        WHERE c.id IN (
+            SELECT p.id
+            FROM Pedido AS p
+            WHERE p.id IN (
+                SELECT dp.fkIdPedido
+                FROM DetallePedido AS dp
+                JOIN Producto AS prod 
+ON dp.fkIdPedido = prod.id
+                WHERE prod.fkIdGama = 'Frutales'
+            )
+        )
+    )
+);
+```
+| oficina                      |
+|------------------------------|
+| Oficina Medellín Centro      |
+| Oficina Barcelona Norte      |
+| Oficina Los Angeles Oeste    |
+| Oficina Lima Central         |
+| Oficina Toronto Este         |
+| Oficina Bogotá Norte         |
+| Oficina Sevilla Sur          |
+| Oficina Houston Central      |
+| Oficina Cusco Centro         |
+| Oficina Montreal Sur         |
+| Oficina Tunja Centro         |
+| Oficina Valencia Este        |
+| Oficina New York Downtown    |
+| Oficina Arequipa Sur         |
+| Oficina Vancouver Norte      |
+| Oficina Bucaramanga Este     |
+| Oficina Madrid Centro        |
+| Oficina Miami Beach          |
+| Oficina Piura Norte          |
+| Oficina Calgary Centro       |
+| Oficina Pasto Centro         |
+| Oficina Santiago Compostela  |
+| Oficina Chicago Norte        |
+| Oficina Tacna Centro         |
+| Oficina Halifax Este         |
+| Oficina Manizales Sur        |
+| Oficina Bilbao Norte         |
+| Oficina Atlanta Midtown      |
+| Oficina Huancayo Norte       |
+| Oficina Medellín Poblado     |
+| Oficina Barcelona Centro     |
+| Oficina Los Angeles Downtown |
+| Oficina Lima Este            |
+| Oficina Toronto Oeste        |
+| Oficina Bogotá Centro        |
+
+
+17. Devuelve un listado con los clientes que han realizado algún pedido pero no
+han realizado ningún pago.
+
+
+```sql
+SELECT c.Nombre
+FROM Cliente AS c
+WHERE c.id IN (SELECT p.fkIdCodigoCliente FROM Pedido AS p)
+  AND c.id NOT IN (SELECT pa.fkIdCodigoCliente FROM Pago AS pa);
+```
+| Nombre             |
+|--------------------|
+| Empresa Alpha      |
+| Servicios Delta    |
+| Distribuidora Zeta |
+| Proyectos Kappa    |
+| Finanzas Nu        |
+| Importaciones Pi   |
+
+
+
+
+
+
+Subconsultas con EXISTS y NOT EXISTS
+18. Devuelve un listado que muestre solamente los clientes que no han
+realizado ningún pago.
+```sql
+SELECT c.Nombre
+FROM Cliente AS c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Pago AS p
+    WHERE p.fkIdCodigoCliente = c.id
+);
+```
+| Nombre             |
+|--------------------|
+| Empresa Alpha      |
+| Comercio Gamma     |
+| Servicios Delta    |
+| Distribuidora Zeta |
+| Proyectos Kappa    |
+| Finanzas Nu        |
+| Importaciones Pi   |
+| Textiles Omega     |
+| Educacion Beta2    |
+
+19. Devuelve un listado que muestre solamente los clientes que sí han realizado
+algún pago.
+
+```sql
+SELECT c.Nombre
+FROM Cliente AS c
+WHERE EXISTS (
+    SELECT 1
+    FROM Pago AS p
+    WHERE p.fkIdCodigoCliente = c.id
+);
+```
+| Nombre             |
+|--------------------|
+| Industria Beta     |
+| Tecnologia Epsilon |
+| Fabricaciones Eta  |
+| Consultoria Theta  |
+| Desarrollos Iota   |
+| Soluciones Lambda  |
+| Transporte Mu      |
+| Construcciones Xi  |
+| Alimentos Omicron  |
+| Exportaciones Rho  |
+| Agricultura Sigma  |
+| Mineria Tau        |
+| Energia Upsilon    |
+| Quimica Phi        |
+| Automotriz Chi     |
+| Metales Psi        |
+| Medicina Alpha2    |
+
+20. Devuelve un listado de los productos que nunca han aparecido en un
+pedido.
+```sql
+SELECT p.Nombre
+FROM Producto AS p
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM DetallePedido AS dp
+    WHERE dp.fkIdProducto = p.id
+);
+```
+| Nombre                   |
+|--------------------------|
+| Filodendro               |
+| Sansevieria              |
+| Lirio de la Paz          |
+| Aloe Vera                |
+| Poto                     |
+| Planta Araña             |
+| Planta ZZ                |
+| Planta de Caucho         |
+| Helecho de Boston        |
+| Calatea                  |
+| Drácena                  |
+| Palma de Bambú           |
+| Ave del Paraíso          |
+| Planta de Interior China |
+| Orquídea                 |
+| Anturio                  |
+| Bambú de la Suerte       |
+| Árbol del Dinero         |
+
+21. Devuelve un listado de los productos que han aparecido en un pedido
+alguna vez.
+
+```sql
+SELECT p.Nombre
+FROM Producto AS p
+WHERE EXISTS (
+    SELECT 1
+    FROM DetallePedido AS dp
+    WHERE dp.fkIdProducto = p.id
+);
+```
+| Nombre            |
+|-------------------|
+| Pothos            |
+| Dracaena          |
+| Philodendron      |
+| Orchid            |
+| Helecho de Boston |
+| Ficus             |
+| Calatea           |
+| Monstera          |
+| Snake Plant       |
+| Lirio de la Paz   |
+| Aloe Vera         |
+| Planta Araña      |
+| Planta ZZ         |
+| Rubber Plant      |
+| Boston Fern       |
+| Calathea          |
+| Dracaena          |
+| Bamboo Palm       |
+| Ficus             |
+| Monstera          |
