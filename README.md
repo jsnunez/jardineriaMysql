@@ -2042,3 +2042,257 @@ WHERE EXISTS (
 | Bamboo Palm       |
 | Ficus             |
 | Monstera          |
+
+
+
+Subconsultas correlacionadas
+Consultas variadas
+1. Devuelve el listado de clientes indicando el nombre del cliente y cuántos
+pedidos ha realizado. Tenga en cuenta que pueden existir clientes que no
+han realizado ningún pedido.
+
+```sql
+SELECT c.Nombre, COUNT(p.id) AS NumPedidos
+FROM Cliente AS c
+LEFT JOIN Pedido AS p ON c.id = p.id
+GROUP BY c.id, c.Nombre;
+```
+| Nombre             | NumPedidos |
+|--------------------|------------|
+| Empresa Alpha      |          1 |
+| Industria Beta     |          1 |
+| Comercio Gamma     |          1 |
+| Servicios Delta    |          1 |
+| Tecnologia Epsilon |          1 |
+| Distribuidora Zeta |          1 |
+| Fabricaciones Eta  |          1 |
+| Consultoria Theta  |          1 |
+| Desarrollos Iota   |          1 |
+| Proyectos Kappa    |          1 |
+| Soluciones Lambda  |          1 |
+| Transporte Mu      |          1 |
+| Finanzas Nu        |          1 |
+| Construcciones Xi  |          1 |
+| Alimentos Omicron  |          1 |
+| Importaciones Pi   |          1 |
+| Exportaciones Rho  |          1 |
+| Agricultura Sigma  |          1 |
+| Mineria Tau        |          1 |
+| Energia Upsilon    |          1 |
+| Quimica Phi        |          0 |
+| Automotriz Chi     |          0 |
+| Metales Psi        |          0 |
+| Textiles Omega     |          0 |
+| Medicina Alpha2    |          0 |
+| Educacion Beta2    |          0 |
+
+
+2. Devuelve un listado con los nombres de los clientes y el total pagado por
+cada uno de ellos. Tenga en cuenta que pueden existir clientes que no han
+realizado ningún pago.
+
+```sql
+SELECT c.Nombre, COALESCE(SUM(pa.total), 0) AS TotalPagado
+FROM Cliente AS c
+LEFT JOIN Pago AS pa ON c.id = pa.idTransaccion
+GROUP BY c.id, c.Nombre;
+```
+| Nombre             | TotalPagado |
+|--------------------|-------------|
+| Empresa Alpha      |      200.00 |
+| Industria Beta     |    30000.00 |
+| Comercio Gamma     |     2010.00 |
+| Servicios Delta    |    20000.00 |
+| Tecnologia Epsilon |     2600.00 |
+| Distribuidora Zeta |      400.00 |
+| Fabricaciones Eta  |      500.00 |
+| Consultoria Theta  |      600.00 |
+| Desarrollos Iota   |      700.00 |
+| Proyectos Kappa    |      800.00 |
+| Soluciones Lambda  |    90000.00 |
+| Transporte Mu      |     1000.00 |
+| Finanzas Nu        |     1100.00 |
+| Construcciones Xi  |     1200.00 |
+| Alimentos Omicron  |   130000.00 |
+| Importaciones Pi   |     1400.00 |
+| Exportaciones Rho  |     1500.00 |
+| Agricultura Sigma  |   160000.00 |
+| Mineria Tau        |     1700.00 |
+| Energia Upsilon    |     1800.00 |
+| Quimica Phi        |     1900.00 |
+| Automotriz Chi     |     2000.00 |
+| Metales Psi        |     2100.00 |
+| Textiles Omega     |        0.00 |
+| Medicina Alpha2    |        0.00 |
+| Educacion Beta2    |        0.00 |
+
+3. Devuelve el nombre de los clientes que hayan hecho pedidos en 2008
+ordenados alfabéticamente de menor a mayor.
+
+```sql
+SELECT DISTINCT c.Nombre
+FROM Cliente AS c
+JOIN Pedido AS p ON c.id = p.id
+WHERE YEAR(p.FechaPedido) = 2008
+ORDER BY c.Nombre;
+```
+
+| Nombre            |
+|-------------------|
+| Empresa Alpha     |
+| Industria Beta    |
+| Soluciones Lambda |
+| Transporte Mu     |
+
+4. Devuelve el nombre del cliente, el nombre y primer apellido de su
+representante de ventas y el número de teléfono de la oficina del
+representante de ventas, de aquellos clientes que no hayan realizado ningún
+pago.
+
+```sql
+SELECT c.Nombre AS NombreCliente, e.Nombre AS NombreRepresentante, e.Apellido1, t.numero
+FROM Cliente AS c
+JOIN Empleado AS e ON c.fkCodigoEmpleadoRepVentas = e.id
+JOIN Oficina AS o ON e.fkIdOficina = o.id
+join telefonooficina AS t ON  t.fkIdOficina=o.id
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Pago AS pa
+    WHERE pa.fkIdCodigoCliente = c.id
+);
+```
+| NombreCliente      | NombreRepresentante | Apellido1 | numero     |
+|--------------------|---------------------|-----------|------------|
+| Empresa Alpha      | Juan                | Perez     | 1234567890 |
+| Empresa Alpha      | Juan                | Perez     | 0987654321 |
+| Comercio Gamma     | Ana                 | Martinez  | 1234567890 |
+| Comercio Gamma     | Ana                 | Martinez  | 0987654321 |
+| Servicios Delta    | Luis                | Lopez     | 1122334455 |
+| Distribuidora Zeta | Jorge               | Garcia    | 1234567890 |
+| Distribuidora Zeta | Jorge               | Garcia    | 0987654321 |
+| Finanzas Nu        | Carmen              | Gomez     | 1122334455 |
+| Importaciones Pi   | Juan                | Perez     | 1234567890 |
+| Importaciones Pi   | Juan                | Perez     | 0987654321 |
+| Textiles Omega     | Elena               | Hernandez | 2233445566 |
+| Educacion Beta2    | Jorge               | Garcia    | 1234567890 |
+| Educacion Beta2    | Jorge               | Garcia    | 0987654321 |
+
+
+5. Devuelve el listado de clientes donde aparezca el nombre del cliente, el
+nombre y primer apellido de su representante de ventas y la ciudad donde
+está su oficina.
+
+```sql
+SELECT c.Nombre AS NombreCliente, e.Nombre AS NombreRepresentante, e.Apellido1,ci.nombre
+FROM Cliente AS c
+JOIN Empleado AS e ON c.fkCodigoEmpleadoRepVentas = e.id
+JOIN Oficina AS o ON e.fkIdOficina = o.id
+join ciudad AS ci ON o.fkIdCiudad = ci.id;
+```
+| NombreCliente      | NombreRepresentante | Apellido1 | nombre      |
+|--------------------|---------------------|-----------|-------------|
+| Empresa Alpha      | Juan                | Perez     | Medellín    |
+| Industria Beta     | Maria               | Gonzalez  | Barcelona   |
+| Comercio Gamma     | Ana                 | Martinez  | Medellín    |
+| Servicios Delta    | Luis                | Lopez     | Barcelona   |
+| Tecnologia Epsilon | Elena               | Hernandez | Los Angeles |
+| Distribuidora Zeta | Jorge               | Garcia    | Medellín    |
+| Fabricaciones Eta  | Laura               | Fernandez | Medellín    |
+| Consultoria Theta  | David               | Sanchez   | Los Angeles |
+| Desarrollos Iota   | Laura               | Fernandez | Medellín    |
+| Soluciones Lambda  | Marta               | Ruiz      | Los Angeles |
+| Transporte Mu      | Alberto             | Garcia    | Medellín    |
+| Finanzas Nu        | Carmen              | Gomez     | Barcelona   |
+| Construcciones Xi  | Pablo               | Hernandez | Los Angeles |
+| Alimentos Omicron  | Elena               | Hernandez | Los Angeles |
+| Importaciones Pi   | Juan                | Perez     | Medellín    |
+| Exportaciones Rho  | Pablo               | Hernandez | Los Angeles |
+| Mineria Tau        | Silvia              | Martinez  | Barcelona   |
+| Energia Upsilon    | Elena               | Hernandez | Los Angeles |
+| Quimica Phi        | Marta               | Ruiz      | Los Angeles |
+| Automotriz Chi     | Maria               | Gonzalez  | Barcelona   |
+| Metales Psi        | Ana                 | Martinez  | Medellín    |
+| Textiles Omega     | Elena               | Hernandez | Los Angeles |
+| Medicina Alpha2    | Laura               | Fernandez | Medellín    |
+| Educacion Beta2    | Jorge               | Garcia    | Medellín    |
+
+6. Devuelve el nombre, apellidos, puesto y teléfono de la oficina de aquellos
+empleados que no sean representante de ventas de ningún cliente.
+
+```sql
+SELECT e.Nombre, e.Apellido1, e.Apellido2, p.Nombre AS Puesto, t.numero
+FROM Empleado AS e
+JOIN Puesto AS p ON e.fkPuesto = p.id
+JOIN Oficina AS o ON e.fkIdOficina = o.id
+JOIN telefonooficina AS t ON t.fkIdOficina= o.id
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Cliente AS c
+    WHERE c.fkCodigoEmpleadoRepVentas = e.id
+);
+```
+| Nombre  | Apellido1  | Apellido2  | Puesto                  | numero     |
+|---------|------------|------------|-------------------------|------------|
+| Carlos  | Pérez      | García     | Representante de Ventas | 1234567890 |
+| Carlos  | Pérez      | García     | Representante de Ventas | 0987654321 |
+| Carlos  | Rodríguez  | Fernández  | Representante de Ventas | 2233445566 |
+| Luis    | Martín     | Gómez      | Representante de Ventas | 4455667788 |
+| Miguel  | Ruiz       | Díaz       | Representante de Ventas | 6677889900 |
+| Javier  | Ramírez    | Castillo   | Representante de Ventas | 8899001122 |
+| Diego   | Gutiérrez  | Silva      | Representante de Ventas | 0011223344 |
+| Antonio | Santos     | Pérez      | Representante de Ventas | 4455667788 |
+| Manuel  | Guerrero   | Cruz       | Representante de Ventas | 6677889900 |
+| José    | Vega       | Flores     | Representante de Ventas | 8899001122 |
+| Ana     | González   | Hernández  | Gerente de Ventas       | 3344556677 |
+| Sofía   | Hernández  | Jiménez    | Gerente de Ventas       | 5566778899 |
+| Lucía   | Sánchez    | Álvarez    | Gerente de Ventas       | 7788990011 |
+| Isabel  | Torres     | Ortiz      | Gerente de Ventas       | 9900112233 |
+| Natalia | Romero     | Ramos      | Gerente de Ventas       | 1122334455 |
+| Carmen  | Iglesias   | Morales    | Gerente de Ventas       | 3344556677 |
+| Paula   | Medina     | Mendoza    | Gerente de Ventas       | 5566778899 |
+| Sara    | Castro     | Herrera    | Gerente de Ventas       | 7788990011 |
+| Raquel  | Suárez     | Campos     | Gerente de Ventas       | 9900112233 |
+
+7. Devuelve un listado indicando todas las ciudades donde hay oficinas y el
+número de empleados que tiene.
+
+
+```sql
+SELECT c.nombre, COUNT(e.id) AS NumEmpleados
+FROM Oficina AS o
+LEFT JOIN Empleado AS e ON o.id = e.fkIdOficina
+JOIN ciudad AS c ON o.fkIdCiudad =c.id
+GROUP BY c.nombre;
+```
+| nombre                 | NumEmpleados |
+|------------------------|--------------|
+| Medellín               |            6 |
+| Barcelona              |            4 |
+| Los Angeles            |            5 |
+| Lima                   |            1 |
+| Toronto                |            1 |
+| Bogotá                 |            1 |
+| Sevilla                |            1 |
+| Houston                |            1 |
+| Cusco                  |            1 |
+| Montreal               |            1 |
+| Tunja                  |            1 |
+| Valencia               |            1 |
+| New York City          |            0 |
+| Arequipa               |            1 |
+| Vancouver              |            1 |
+| Bucaramanga            |            1 |
+| Madrid                 |            1 |
+| Miami                  |            1 |
+| Piura                  |            1 |
+| Calgary                |            1 |
+| Pasto                  |            0 |
+| Santiago de Compostela |            0 |
+| Chicago                |            0 |
+| Tacna                  |            0 |
+| Halifax                |            0 |
+| Manizales              |            0 |
+| Fuenlabrada            |            0 |
+| Atlanta                |            0 |
+| Huancayo               |            0 |
+
