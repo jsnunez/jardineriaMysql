@@ -1417,7 +1417,7 @@ FROM cliente
 WHERE limiteCredito =( SELECT  max(limiteCredito) from cliente);
 ```
 | nombre         |
-+----------------+
+|----------------|
 | Industria Beta |
 
 
@@ -1428,7 +1428,7 @@ FROM producto
 WHERE precioVenta=( SELECT  max(precioVenta) from producto);
 ```
 | nombre            |
-+-------------------+
+|-------------------|
 | Árbol del Dinero  |
 
 
@@ -1446,7 +1446,7 @@ WHERE dp.cantidad= (SELECT MAX(dp.cantidad)
 group by p.nombre ;
 ```
 | nombre      | sum(dp.cantidad) |
-+-------------+------------------+
+|-------------|------------------|
 | Snake Plant |                6 |
 
 
@@ -1464,7 +1464,7 @@ WHERE LimiteCredito > (
 );
 ```
 | id | Nombre             |
-+----+--------------------+
+|----|--------------------|
 |  2 | Industria Beta     |
 |  5 | Tecnologia Epsilon |
 |  7 | Fabricaciones Eta  |
@@ -1488,7 +1488,7 @@ FROM producto
 WHERE cantidadEnStock = (SELECT max(cantidadEnStock) FROM producto);
 ```
 | nombre          |
-+-----------------+
+|-----------------|
 | Lirio de la Paz |
 
 
@@ -1499,7 +1499,7 @@ FROM producto
 WHERE cantidadEnStock = (SELECT min(cantidadEnStock) FROM producto);
 ```
 | nombre      |
-+-------------+
+|-------------|
 | Boston Fern |
 
 
@@ -1512,7 +1512,7 @@ from empleado
 where fkIdJefe=(SELECT id from empleado where nombre ='Elena' ) AND apellido1='Hernandez';
 ```
 | empleadosAcargo          | email                       |
-+--------------------------+-----------------------------+
+|--------------------------|-----------------------------|
 | SofíaHernándezJiménez    | sofia.hernandez@empresa.com |
 
 Subconsultas con ALL y ANY
@@ -1527,7 +1527,7 @@ WHERE LimiteCredito >= ALL (SELECT LimiteCredito FROM Cliente);
 ```
 
 | nombre         |
-+----------------+
+|----------------|
 | Industria Beta |
 
 
@@ -1538,7 +1538,7 @@ FROM producto
 WHERE precioVenta>= ALL (SELECT precioVenta FROM producto);
 ```
 | nombre            |
-+-------------------+
+|-------------------|
 | Árbol del Dinero  |
 
 10. Devuelve el producto que menos unidades tiene en stock.
@@ -1548,5 +1548,5 @@ FROM producto
 WHERE cantidadEnStock <= ANY (SELECT MIN(cantidadEnStock) FROM producto);
 ```
 | nombre      |
-+-------------+
+|-------------|
 | Boston Fern |
