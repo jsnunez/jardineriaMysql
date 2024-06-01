@@ -115,7 +115,7 @@ FROM empleado
 WHERE fkIdJefe <> 1 ;
  ```
 | nombre  | apellido1  | apellido2  | email                        |
-+---------+------------+------------+------------------------------+
+|---------|------------|------------|------------------------------|
 | Luis    | Lopez      | Perez      | luis.lopez@company.com       |
 | Elena   | Hernandez  | Gonzalez   | elena.hernandez@company.com  |
 | Silvia  | Martinez   | Ramirez    | silvia.martinez@company.com  |
@@ -161,7 +161,7 @@ WHERE p.nombre='españa';
 ```
 
 | Nombre_Cliente    | pais    |
-+-------------------+---------+
+|-------------------|---------|
 | Industria Beta    | españa  |
 | Automotriz Chi    | españa  |
 | Fabricaciones Eta | españa  |
@@ -175,7 +175,7 @@ pedido.
 select nombre from estado;
 ```
 | nombre    |
-+-----------+
+|-----------|
 | Entregado |
 | Rechazado |
 | Pendiente |
@@ -193,7 +193,7 @@ WHERE year(fechaPago)='2008'
 GROUP BY idTransaccion ;
 ```
 | idTransaccion |
-+---------------+
+|---------------|
 |             1 |
 |             2 |
 |             3 |
@@ -210,7 +210,7 @@ GROUP BY idTransaccion;
 ```
 
 | idTransaccion |
-+---------------+
+|---------------|
 |             1 |
 |             2 |
 |             3 |
@@ -226,7 +226,7 @@ FROM pago
 WHERE fechaPago<'2009,01,01';
 ```
 | idTransaccion |
-+---------------+
+|---------------|
 |             1 |
 |             2 |
 |             3 |
@@ -244,7 +244,7 @@ FROM pedido p
 WHERE p.fechaEntrega> p.fechaEsperada;
 ```
 | codigo_pedido | fkIdCodigoCliente | fechaEsperada | fechaEntrega |
-+---------------+-------------------+---------------+--------------+
+|---------------|-------------------|---------------|--------------|
 |             3 |                 8 | 2009-05-25    | 2009-05-28   |
 |             5 |                 8 | 2010-09-17    | 2010-09-25   |
 |            11 |                 1 | 2008-03-02    | 2008-03-05   |
@@ -261,7 +261,7 @@ WHERE ADDDATE(p.fechaEsperada, INTERVAL 2 DAY)>p.fechaEntrega
  ;
 ```
 | codigo_pedido | fkIdCodigoCliente | fechaEsperada | fechaEntrega |
-+---------------+-------------------+---------------+--------------+
+|---------------|-------------------|---------------|--------------|
 |             1 |                 1 | 2008-01-20    | 2008-01-18   |
 |             2 |                 2 | 2008-03-15    | 2008-03-13   |
 |             4 |                 4 | 2009-07-30    | 2009-07-28   |
@@ -284,7 +284,7 @@ FROM pedido p
 WHERE DATEDIFF(p.fechaEsperada,p.fechaEntrega) >= 2 ;
 ```
 | codigo_pedido | fkIdCodigoCliente | fechaEsperada | fechaEntrega |
-+---------------+-------------------+---------------+--------------+
+|---------------|-------------------|---------------|--------------|
 |             1 |                 1 | 2008-01-20    | 2008-01-18   |
 |             2 |                 2 | 2008-03-15    | 2008-03-13   |
 |             4 |                 4 | 2009-07-30    | 2009-07-28   |
@@ -308,7 +308,7 @@ ON p.fkIdEstado=e.id
 WHERE e.nombre='rechazado' and year(fechaPedido) = '2009';
 ```
 | codigo_pedido |
-+---------------+
+|---------------|
 |            14 |
 12. Devuelve un listado de todos los pedidos que han sido entregados en el
 mes de enero de cualquier año.
@@ -318,7 +318,7 @@ FROM pedido AS p
 WHERE MONTH(fechaEntrega)= '01';
 ```
 | codigo_pedido | fechaEntrega |
-+---------------+--------------+
+|---------------|--------------|
 |             1 | 2008-01-18   |
 |             7 | 2011-01-08   |
 13. Devuelve un listado con todos los pagos que se realizaron en el
@@ -333,7 +333,7 @@ ORDER BY p.total DESC;
 ```
 
 | total    | idTransaccion | forma_pago |
-+----------+---------------+------------+
+|----------|---------------|------------|
 | 30000.00 |             2 | Paypal     |
 | 20000.00 |             4 | Paypal     |
 |  2600.00 |             5 | Paypal     |
@@ -351,7 +351,7 @@ ON p.fkFormaPago=f.id
 GROUP BY f.id;
 ```
 | nombre          |
-+-----------------+
+|-----------------|
 | Paypal          |
 | Nequi           |
 | Tarjeta credito |
@@ -370,7 +370,7 @@ ON  g.id =p.fkIdGama
 WHERE g.nombre='ornamentales' AND cantidadEnStock > 100 ;
 ```
 | nombre     | cantidadEnStock |
-+------------+-----------------+
+|------------|-----------------|
 | Filodendro |             150 |
 | Planta ZZ  |             270 |
 | Anturio    |             240 |
